@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Firebase local config (contains sensitive emulator state)
+.firebase/
+
+# Environment / secrets — NEVER commit actual Firebase credentials
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,34 @@
+rules_version = '2';
+// ─────────────────────────────────────────────────────────────────────────────
+// Firestore Security Rules — Relyn CRM
+//
+// Only authenticated users can read or write to the database.
+// Authentication is handled by Firebase Auth (Google + Email/Password).
+// ─────────────────────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: is the user authenticated?
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Leads collection (Tab 1) — allows list, get, create, update
+    match /leads/{leadId} {
+      allow list, read, create, update: if isAuthenticated();
+      allow delete: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+    }
+
+    // Pipeline collection (Tab 2) — allows list, get, create, update
+    match /pipeline/{dealId} {
+      allow list, read, create, update: if isAuthenticated();
+      allow delete: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+    }
+
+    // Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
