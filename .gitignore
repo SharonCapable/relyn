@@ -20,3 +20,7 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Firebase logs
+*-debug.log
+.firebase/
